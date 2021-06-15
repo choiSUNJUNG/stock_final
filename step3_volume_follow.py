@@ -1,5 +1,5 @@
 # 일 평균 30만주이상 거래되는 nasdaq, newyork, amex 중(300k_day_coms.xlsx)
-# 60일 거래량 평균 대비 60일내 일일 최대 거래량이 500% 이상인 종목 추출(5_volume_follow.xlsx)
+# 60일 거래량 평균 대비 60일내 일일 최대 거래량이 500% 이상인 종목 추출(step3_volume_follow.xlsx)
 # 주1회 가동(매주말) 
 
 from pandas_datareader import data as pdr
