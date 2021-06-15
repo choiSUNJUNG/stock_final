@@ -1,7 +1,7 @@
 # 일 평균 30만주이상 거래되는 nasdaq, newyork, amex 중 
 # 60일 거래량 평균 대비 60일내 일일 최대 거래량이 500% 이상인 종목(5_volume_follow.xlsx) 중
 # macd > 0 인 종목 추출
-# 일 1회 가동!!!(macd 0선 위 올라오는 신규종목 도출)(5_volume_follow_w_macd.xlsx)
+# 일 1회 가동!!!(macd 0선 위 올라오는 신규종목 도출)(step4_volume_follow_w_macd.xlsx)
 
 from pandas_datareader import data as pdr
 import yfinance as yf
