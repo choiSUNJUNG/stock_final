@@ -31,7 +31,7 @@ for i in range(len(df_com1)):
         sheet.append([now, 'NASDAQ', df_com1.iloc[i]['Symbol'], df_com1.iloc[i]['IndustryCode'], \
             df_com1.iloc[i]['Name'], df_com1.iloc[i]['Industry'], df_v])
     i += 1   
-wb.save('300k_day_coms.xlsx')
+wb.save('step2_300k_day_coms.xlsx')
 i = 1
 for i in range(len(df_com2)):
     # df = pdr.get_data_yahoo(df_com2.iloc[i]['Symbol'], period = '1mo')  # 기간 1month
@@ -63,4 +63,4 @@ for i in range(len(df_com3)):
         sheet.append([now, 'AMEX', df_com3.iloc[i]['Symbol'], df_com3.iloc[i]['IndustryCode'], \
             df_com3.iloc[i]['Name'], df_com3.iloc[i]['Industry'], df_v])
     i += 1 
-wb.save('300k_day_coms.xlsx')
+wb.save('step2_300k_day_coms.xlsx')
