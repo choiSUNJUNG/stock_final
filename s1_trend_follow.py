@@ -45,7 +45,7 @@ for i in range(len(df_com)):
                 df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'], df.iloc[-1]['vol_max'], \
                     df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '60', ''])
             wb.save('s1_trend_follow.xlsx')
-        print('매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'])
+        print('60일 매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'])
     elif df.iloc[-1]['Close'] >= df.iloc[-2]['high_20_max'] and df.iloc[-1]['Close'] > df.iloc[-1]['ma120'] > df.iloc[-3]['ma120']:  #60일 아닌 경우 20일 최고치
         if df.iloc[-1]['vol_max'] > df.iloc[-1]['vol_mean'] * 5 :   # 120일 거래량 평균 대비 120일내 일일 최대 거래량이 500% 이상인 종목
             sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], \
@@ -57,4 +57,5 @@ for i in range(len(df_com)):
                 df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_20_max'], df.iloc[-1]['vol_max'], \
                     df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '20', ''])
             wb.save('s1_trend_follow.xlsx')
+        print('20일 매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_20_max'])
     i += 1  
