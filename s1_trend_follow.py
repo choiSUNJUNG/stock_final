@@ -16,7 +16,7 @@ yf.pdr_override()
 wb = openpyxl.Workbook()
 sheet = wb.active
 # cell name 생성
-sheet.append(['time', 'market', 'symbol', 'code', 'company_name', 'price', 'high_max', 'vol_max', 'vol_mean', 'industry', 'power'])
+sheet.append(['time', 'market', 'symbol', 'code', 'company_name', 'price', 'high_max', 'vol_max', 'vol_mean', 'industry', '20or60', 'power'])
 wb.save('s1_trend_follow.xlsx')
 
 #회사 데이터 읽기
@@ -26,24 +26,35 @@ now = datetime.datetime.now()
 i = 1
 for i in range(len(df_com)):
     df = pdr.get_data_yahoo(df_com.iloc[i]['symbol'], period = '150d')  # 기간 6개월
-    df['high_max'] = df['Close'].rolling(window=60).max()
+    df['high_20_max'] = df['Close'].rolling(window=20).max()
+    df['high_60_max'] = df['Close'].rolling(window=60).max()
     df['ma120'] = df['Close'].rolling(window=120).mean()
     df['vol_mean'] = df['Volume'].rolling(window=120).mean()
     df['vol_max'] = df['Volume'].rolling(window=120).max()
     
     # print(df)
-    # 오늘 종가(현재가)가 60 고점(전고점) 보다 높고 120이평선 위에 있으며 120 이평선 또한 상승하는 경우
-    if df.iloc[-1]['Close'] >= df.iloc[-2]['high_max'] and df.iloc[-1]['Close'] > df.iloc[-1]['ma120'] > df.iloc[-3]['ma120']:  
+    # 오늘 종가(현재가)가 20 또는 60 고점(전고점) 보다 높고 120이평선 위에 있으며 120 이평선 또한 상승하는 경우
+    if df.iloc[-1]['Close'] >= df.iloc[-2]['high_60_max'] and df.iloc[-1]['Close'] > df.iloc[-1]['ma120'] > df.iloc[-3]['ma120']:    #60일 최고치
         if df.iloc[-1]['vol_max'] > df.iloc[-1]['vol_mean'] * 5 :   # 120일 거래량 평균 대비 120일내 일일 최대 거래량이 500% 이상인 종목
             sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], \
-                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_max'], df.iloc[-1]['vol_max'], \
-                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '●power'])
+                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'], df.iloc[-1]['vol_max'], \
+                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '20', '●power'])
             wb.save('s1_trend_follow.xlsx')
         else : # 거래량 무관
             sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], \
-                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_max'], df.iloc[-1]['vol_max'], \
-                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], ''])
+                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'], df.iloc[-1]['vol_max'], \
+                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '60', ''])
             wb.save('s1_trend_follow.xlsx')
-        print('매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_max'])
-    
+        print('매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_60_max'])
+    elif df.iloc[-1]['Close'] >= df.iloc[-2]['high_20_max'] and df.iloc[-1]['Close'] > df.iloc[-1]['ma120'] > df.iloc[-3]['ma120']:  #60일 아닌 경우 20일 최고치
+        if df.iloc[-1]['vol_max'] > df.iloc[-1]['vol_mean'] * 5 :   # 120일 거래량 평균 대비 120일내 일일 최대 거래량이 500% 이상인 종목
+            sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], \
+                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_20_max'], df.iloc[-1]['vol_max'], \
+                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '60', '●power'])
+            wb.save('s1_trend_follow.xlsx')
+        else : # 거래량 무관
+            sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], \
+                df_com.iloc[i]['company_name'], df.iloc[-1]['Close'], df.iloc[-2]['high_20_max'], df.iloc[-1]['vol_max'], \
+                    df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '20', ''])
+            wb.save('s1_trend_follow.xlsx')
     i += 1  
