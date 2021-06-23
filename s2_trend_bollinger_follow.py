@@ -13,18 +13,21 @@ import time
 
 yf.pdr_override()
 wb = openpyxl.Workbook()
+now = datetime.datetime.now()
+filename = datetime.datetime.now().strftime("%Y-%m-%d")
+
 # wb.save('watch_data.xlsx')
 sheet = wb.active
 # cell name : date, simbol, company name, upper or lower or narrow band 
 sheet.append(['time', 'market', 'symbol', 'code', 'company_name', 'bol_high', 'bol_lower', 'bol_gap(%)', 'rise_margin(%)', 'price', 'industry', 'trade'])
-wb.save('s2_trend_bollinger_follow.xlsx')
+wb.save('s2_trend_bollinger_follow_'+filename+'.xlsx')
 
 #회사 데이터 읽기
 df_com = pd.read_excel("s1_trend_follow_tot.xlsx")
 # print(df_com)
 # len(df_com)
 # print(len(df_com))
-now = datetime.datetime.now()
+
 # while True:
 #     try:
 #         time.sleep(10)
@@ -64,7 +67,7 @@ for i in range(len(df_com)):
         if df.iloc[-1]['Close'] > a1 and df.iloc[-1]['Close'] < df.iloc[-1]['MA60']*1.1: #현재가가 직전 2일간 최대값보다 크고 60이평선 1.1배 이하인 경우
             sheet.append([now, df_com.iloc[i]['market'], df_com.iloc[i]['symbol'], df_com.iloc[i]['code'], df_com.iloc[i]['company_name'], \
                 df.iloc[-1]['upper'], df.iloc[-1]['lower'], df.iloc[-1]['gap'], df.iloc[-1]['rise_margin'], df.iloc[-1]['Close'], df_com.iloc[i]['industry'],'buy'])
-            wb.save('s2_trend_bollinger_follow.xlsx')
+            wb.save('s2_trend_bollinger_follow'+filename+'.xlsx')
             print('buy', df_com.iloc[i]['symbol'])
                
             # elif df_b <= 20:
@@ -72,9 +75,9 @@ for i in range(len(df_com)):
             #     wb.save('watch_data.xlsx')
     i += 1   
 
-df_1 = pd.read_excel("s2_trend_bollinger_follow.xlsx") 
+df_1 = pd.read_excel('s2_trend_bollinger_follow'+filename+'.xlsx') 
 df_b_f = df_1.sort_values(by = 'rise_margin(%)', ascending= False) # gap_close_ratio(%) 기준 올림차순으로 sorting
-df_b_f.to_excel('s2_trend_bollinger_follow_sorted.xlsx')
+df_b_f.to_excel('s2_trend_bollinger_follow_sorted_'+filename+'.xlsx')
     #         time.sleep(0.1)
     # except Exception as e:
     #     print(e)
