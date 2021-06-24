@@ -2,7 +2,7 @@
 # 현 주가가 12주(60일) 전고점 돌파하고 상승하는 120일선 위에 있는 종목
 # (120일 거래량 평균 대비 120일내 일일 최대 거래량이 500% 이상인 경우 '●power'로 표시
 # 
-# 추출종목 's1_trend_follow.xlsx'결과는 메인인's1_trend_follow_tot.xlsx'에 추가함(수동)
+# 추출종목 's1_trend_follow.xlsx'결과는 메인인's1_trend_follow_tot.xlsx'에 추가함(by 's2_trend_follow_total.py')
 # 
 # 
 from pandas_datareader import data as pdr
@@ -58,4 +58,6 @@ for i in range(len(df_com)):
                     df.iloc[-1]['vol_mean'], df_com.iloc[i]['industry'], '20', ''])
             wb.save('s1_trend_follow.xlsx')
         print('20일 매수발생 : ', df_com.iloc[i]['symbol'], df.iloc[-1]['Close'], df.iloc[-2]['high_20_max'])
+    else:
+        print(df_com.iloc[i]['symbol'])   
     i += 1  
